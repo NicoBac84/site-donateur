@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Connexion - Paris City Life RP</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #0033a0, #ffffff, #d80027);
+      font-family: Arial, sans-serif;
+      display: flex; justify-content: center; align-items: center;
+      height: 100vh; margin: 0;
+    }
+    .container {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      width: 350px;
+    }
+    h2 {
+      text-align: center;
+      color: #0033a0;
+    }
+    input {
+      width: 100%; padding: 10px;
+      margin: 10px 0; border-radius: 6px; border: 1px solid #ccc;
+    }
+    button {
+      width: 100%; padding: 12px;
+      background-color: #0033a0;
+      color: white;
+      border: none; border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #d80027;
+    }
+    .message {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 0.9rem;
+    }
+    .switch {
+      background: none;
+      border: none;
+      color: #0033a0;
+      cursor: pointer;
+      text-decoration: underline;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+<script>
+  if (localStorage.getItem('maintenanceActive') === 'true') {
+    window.location.href = "maintenance.html";
+  }
+</script>
+<script>
+  // Vérifie si le mode 404 est activé
+  const is404Active = localStorage.getItem('page404Active') === 'true';
+
+  // Ne pas rediriger si on est déjà sur la page 404
+  if (is404Active && !window.location.href.includes('404.html')) {
+    window.location.href = '404.html';
+  }
+</script>
+
+<div class="container">
+  <h2 id="formTitle">Connexion</h2>
+  <input type="email" id="email" placeholder="Adresse email" required />
+  <input type="password" id="password" placeholder="Mot de passe" required />
+  <button onclick="handleAuth()">Se connecter</button>
+  <div class="message">
+    <span id="toggleText">Pas encore de compte ?</span>
+    <button class="switch" onclick="toggleMode()">Créer un compte</button>
+  </div>
+  <div id="status" style="text-align:center;color:red;margin-top:10px;"></div>
+</div>
+
+<script>
+  let isLogin = true;
+
+  function toggleMode() {
+    isLogin = !isLogin;
+    document.getElementById('formTitle').textContent = isLogin ? 'Connexion' : 'Créer un compte';
+    document.querySelector('button').textContent = isLogin ? 'Se connecter' : 'Créer le compte';
+    document.getElementById('toggleText').textContent = isLogin ? 'Pas encore de compte ?' : 'Déjà inscrit ?';
+    document.querySelector('.switch').textContent = isLogin ? 'Créer un compte' : 'Connexion';
+    document.getElementById('status').textContent = "";
+  }
+
+  function handleAuth() {
+    const email = document.getElementById('email').value.trim();
+    const pass = document.getElementById('password').value;
+    const users = JSON.parse(localStorage.getItem('users') || '{}');
+
+    if (!email || !pass) {
+      document.getElementById('status').textContent = "Veuillez remplir tous les champs.";
+      return;
+    }
+
+    if (isLogin) {
+      if (users[email] && users[email].password === pass) {
+        localStorage.setItem('userConnected', 'true');
+        localStorage.setItem('userEmail', email);
+        window.location.href = "dashboardDonateur.html"; // Rediriger après connexion
+      } else {
+        document.getElementById('status').textContent = "Email ou mot de passe incorrect.";
+      }
+    } else {
+      if (users[email]) {
+        document.getElementById('status').textContent = "Un compte existe déjà avec cet email.";
+      } else {
+        users[email] = { password: pass };
+        localStorage.setItem('users', JSON.stringify(users));
+        document.getElementById('status').textContent = "Compte créé avec succès ! Vous pouvez vous connecter.";
+        toggleMode();
+      }
+    }
+  }
+</script>
+
+</body>
+</html>
