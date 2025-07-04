@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Connexion Admin - Paris City Life RP</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #0033a0, #ffffff, #d80027);
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      color: #0033a0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .login-container {
+      background: white;
+      padding: 2rem 3rem;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      width: 320px;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 1.5rem;
+    }
+    input[type="email"], input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    button {
+      background-color: #0033a0;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      width: 100%;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    button:hover {
+      background-color: #d80027;
+    }
+    #errorMsg {
+      margin-top: 15px;
+      color: red;
+      font-weight: bold;
+      min-height: 1.2em;
+    }
+  </style>
+</head>
+
+
+<body>
+  <div class="login-container">
+    <h1>Connexion Admin</h1>
+    <form id="adminLoginForm">
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Mot de passe" required />
+      <button type="submit">Se connecter</button>
+    </form>
+    <div id="errorMsg"></div>
+  </div>
+
+  <script>
+    // Simuler base d'admins - à remplacer par un backend sécurisé
+    const admins = [
+      { email: "admin@example.fr", password: "Admin12384", discordRole: "admin" },
+      { email: "staff@pcitylife.com", password: "Staff2025!", discordRole: "staff" }
+    ];
+
+    document.getElementById('adminLoginForm').addEventListener('submit', function(e){
+      e.preventDefault();
+
+      const email = document.getElementById('email').value.trim().toLowerCase();
+      const password = document.getElementById('password').value;
+
+      const errorMsg = document.getElementById('errorMsg');
+
+      // Recherche admin
+      const user = admins.find(u => u.email === email);
+
+      if (!user) {
+        errorMsg.textContent = "Email inconnu.";
+        return;
+      }
+
+      if (user.password !== password) {
+        errorMsg.textContent = "Mot de passe incorrect.";
+        return;
+      }
+
+      // Vérifier rôle Discord (ici simulé)
+      if (user.discordRole !== "admin" && user.discordRole !== "staff") {
+        errorMsg.textContent = "Vous n'avez pas les droits nécessaires.";
+        return;
+      }
+
+      // Connexion OK, stocker session
+      localStorage.setItem('adminConnected', 'true');
+      localStorage.setItem('adminEmail', email);
+      localStorage.setItem('adminRole', user.discordRole);
+
+      // Redirection vers dashboard admin
+      window.location.href = "dashboardAdmin.html";
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard Donateur - Paris City Life RP</title>
+  <style>
+    :root {
+      --bleu: #0033a0;
+      --rouge: #d80027;
+      --accent-color: #0052cc;
+    }
+
+    body {
+      background: linear-gradient(to right, #0033a0, #ffffff, #d80027);
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      color: #0033a0;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 2rem;
+    }
+    th, td {
+      padding: 8px;
+      border-bottom: 1px solid #ccc;
+      text-align: center;
+    }
+    th {
+      background-color: #0033a0;
+      color: white;
+    }
+    input[type="number"], input[type="checkbox"] {
+      margin-top: 10px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    button {
+      background-color: var(--bleu);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      margin-top: 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      width: 100%;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: var(--rouge);
+    }
+
+    #message {
+      margin-top: 15px;
+      color: red;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    #consentText {
+      background: #eee;
+      padding: 10px;
+      margin-top: 15px;
+      font-size: 0.9rem;
+      white-space: pre-line;
+      border-radius: 6px;
+      max-height: 150px;
+      overflow-y: auto;
+    }
+
+    .logout-btn {
+      background-color: gray;
+      margin-top: 30px;
+    }
+
+    /* Header profile & animation */
+    .profile {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      margin-bottom: 20px;
+    }
+
+    .profile:hover {
+      transform: scale(1.03);
+    }
+
+    .profile img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      animation: pulse 2s infinite;
+      margin-right: 12px;
+      border: 2px solid var(--rouge);
+    }
+
+    @keyframes pulse {
+      0%, 100% { filter: brightness(1); }
+      50% { filter: brightness(1.3); }
+    }
+
+    .profile-name {
+      font-size: 1.1em;
+      font-weight: 600;
+    }
+
+    /* Social icons fixés */
+    .social-icons {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 20px;
+      z-index: 1000;
+    }
+    .social-icons img {
+      animation: pulseGlow 2s infinite;
+      transition: transform 0.3s ease, filter 0.3s ease;
+      cursor: pointer;
+      width: 30px;
+      height: 30px;
+    }
+    .social-icons img:hover {
+      transform: scale(1.3);
+      filter: brightness(1.5) drop-shadow(0 0 6px var(--accent-color));
+    }
+    @keyframes pulseGlow {
+      0%, 100% {
+        filter: brightness(1) drop-shadow(0 0 2px var(--accent-color));
+      }
+      50% {
+        filter: brightness(1.3) drop-shadow(0 0 8px var(--accent-color));
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="profile" onclick="window.location.href='profilUtilisateur.html'">
+      <img id="user-photo" src="https://i.imgur.com/6VBx3io.gif" alt="Photo utilisateur" />
+      <div class="profile-name" id="user-name">Donateur</div>
+    </div>
+  </div>
+
+  <div class="social-icons">
+    <a href="https://discord.gg/tonserveur" target="_blank">
+      <img src="https://cdn-icons-png.flaticon.com/512/2111/2111370.png" alt="Discord" />
+    </a>
+    <a href="https://tiktok.com/@tonserveur" target="_blank">
+      <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" alt="TikTok" />
+    </a>
+    <a href="https://instagram.com/tonserveur" target="_blank">
+      <img src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png" alt="Instagram" />
+    </a>
+  </div>
+
+  <div class="main-content">
+    <div class="container">
+      <h1>Bienvenue dans votre espace Donateur</h1>
+
+      <h2>Faire une nouvelle déclaration de don</h2>
+      <form id="donForm">
+        <label>
+          Prénom : 
+          <input type="text" id="firstName" required />
+        </label>
+        <label>
+          Nom : 
+          <input type="text" id="lastName" required />
+        </label>
+        <label>
+          Montant du don (€) : 
+          <input type="number" id="donAmount" min="1" max="150" step="0.01" required />
+          <small>Montant maximum : 150€</small>
+        </label>
+
+        <label>
+          <input type="checkbox" id="notRobot" /> Je ne suis pas un robot
+        </label>
+
+        <label>
+          <input type="checkbox" id="rgpdConsent" required />
+          Je soussigné(e) <span id="userNamePlaceholder">[Prénom Nom]</span>, accepte la Politique de Donation (RGPD & UE).
+        </label>
+
+        <button type="submit">Envoyer le don</button>
+      </form>
+
+      <div id="message"></div>
+
+      <h3>Document de consentement généré :</h3>
+      <pre id="consentText">Aucun document généré pour l’instant.</pre>
+
+      <button class="logout-btn" onclick="logout()">Se déconnecter</button>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Montant (€)</th>
+          <th>Consentement RGPD</th>
+        </tr>
+      </thead>
+      <tbody id="donationsList">
+        <!-- Dons insérés ici -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    // Vérifier connexion
+    const userEmail = localStorage.getItem('userEmail');
+    const isConnected = localStorage.getItem('userConnected') === 'true';
+    if (!isConnected || !userEmail) {
+      alert("Vous devez être connecté pour accéder à cette page.");
+      window.location.href = "connexion.html";
+    }
+
+    // Charger l'historique des dons stocké dans localStorage
+    let donations = JSON.parse(localStorage.getItem('donations_' + userEmail) || '[]');
+
+    function renderDonations() {
+      const tbody = document.getElementById('donationsList');
+      tbody.innerHTML = '';
+      if (donations.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3">Aucun don effectué pour le moment.</td></tr>';
+        return;
+      }
+      donations.forEach(don => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${new Date(don.date).toLocaleString()}</td>
+          <td>${don.amount.toFixed(2)}</td>
+          <td>${don.consent ? "Oui" : "Non"}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    renderDonations();
+
+    // Met à jour le texte dans le label RGPD au fur et à mesure que l'utilisateur tape son nom/prénom
+    const firstNameInput = document.getElementById('firstName');
+    const lastNameInput = document.getElementById('lastName');
+    const userNamePlaceholder = document.getElementById('userNamePlaceholder');
+
+    function updateUserNamePlaceholder() {
+      const fName = firstNameInput.value.trim();
+      const lName = lastNameInput.value.trim();
+      userNamePlaceholder.textContent = (fName || lName) ? `${fName} ${lName}`.trim() : '[Nom Prénom]';
+    }
+    firstNameInput.addEventListener('input', updateUserNamePlaceholder);
+    lastNameInput.addEventListener('input', updateUserNamePlaceholder);
+
+    // Générer document de consentement (texte simple)
+    function generateConsentDoc(name, date, amount) {
+      return `Je soussigné(e) ${name}, confirme avoir fait un don d'un montant de ${amount.toFixed(2)} € le ${new Date(date).toLocaleString()} à Paris City Life RP.\n` +
+             `Je certifie avoir lu et accepté la Politique de Donation et la déclaration RGPD applicable en UE.\n` +
+             `Lu et Approuvé.\n` +
+             `Signature : ${name}`;
+    }
+
+    // Formulaire don
+    document.getElementById('donForm').addEventListener('submit', function(e){
+      e.preventDefault();
+
+      const firstName = firstNameInput.value.trim();
+      const lastName = lastNameInput.value.trim();
+      const amount = parseFloat(document.getElementById('donAmount').value);
+      const notRobotChecked = document.getElementById('notRobot').checked;
+      const rgpdChecked = document.getElementById('rgpdConsent').checked;
+
+      if (!firstName || !lastName) {
+        showMessage("Veuillez renseigner votre prénom et nom.");
+        return;
+      }
+      if (!notRobotChecked) {
+        showMessage("Veuillez confirmer que vous n'êtes pas un robot.");
+        return;
+      }
+      if (!rgpdChecked) {
+        showMessage("Vous devez accepter la Politique de Donation (RGPD).");
+        return;
+      }
+      if (amount <= 0 || amount > 150 || isNaN(amount)) {
+        showMessage("Le montant de don doit être compris entre 1 et 150 €.");
+        return;
+      }
+
+      // Ajouter don à l'historique
+      const don = {
+        date: new Date().toISOString(),
+        amount: amount,
+        consent: true,
+        firstName: firstName,
+        lastName: lastName
+      };
+
+      donations.push(don);
+      localStorage.setItem('donations_' + userEmail, JSON.stringify(donations));
+      renderDonations();
+
+      // Générer document de consentement
+      const fullName = `${firstName} ${lastName}`.trim();
+      const consentDocText = generateConsentDoc(fullName, don.date, amount);
+      document.getElementById('consentText').textContent = consentDocText;
+
+      showMessage("Merci pour votre don !", "green");
+
+      // Reset formulaire (optionnel)
+      this.reset();
+      updateUserNamePlaceholder();
+    });
+
+    // Affichage messages
+    function showMessage(msg, color = 'red') {
+      const messageDiv = document.getElementById('message');
+      messageDiv.style.color = color;
+      messageDiv.textContent = msg;
+      setTimeout(() => {
+        messageDiv.textContent = '';
+      }, 7000);
+    }
+
+    // Fonction déconnexion
+    function logout() {
+      localStorage.removeItem('userConnected');
+      localStorage.removeItem('userEmail');
+      window.location.href = 'connexion.html';
+    }
+
+    // Afficher nom et photo utilisateur dans header (si tu veux personnaliser)
+    document.getElementById('user-name').textContent = localStorage.getItem('userName') || "Donateur";
+    const photoUrl = localStorage.getItem('userPhotoUrl');
+    if(photoUrl) {
+      document.getElementById('user-photo').src = photoUrl;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,638 @@
+<!DOCTYPE html> 
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard Admin - Paris City Life RP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: #f0f4f8;
+      color: #0033a0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: linear-gradient(90deg, #0033a0, #fff, #d80027);
+      color: white;
+      padding: 1rem 2rem;
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.6rem;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+    }
+    main {
+      flex: 1;
+      padding: 20px 30px;
+      max-width: 1200px;
+      margin: auto;
+      width: 100%;
+    }
+    .logout-btn {
+      background: #d80027;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      float: right;
+      margin-top: -2.5rem;
+    }
+    .logout-btn:hover {
+      background: #0033a0;
+    }
+    h2 {
+      margin-top: 0;
+      margin-bottom: 15px;
+      color: #0033a0;
+    }
+
+    /* Tableau dons */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 2rem;
+      background: white;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+    th {
+      background: #0033a0;
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+    tr:hover {
+      background-color: #f1f9ff;
+    }
+    button.action-btn {
+      background: #0033a0;
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 5px;
+      font-size: 0.85rem;
+    }
+    button.action-btn:hover {
+      background: #d80027;
+    }
+    /* Filtres */
+    .filters {
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .filters input, .filters select {
+      padding: 6px 10px;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      flex: 1 1 150px;
+    }
+.logout-btn {
+  background: #d80027;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  float: right;
+  margin-top: -2.5rem;
+}
+
+    /* Graphiques */
+    .charts-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: center;
+    }
+    .chart-box {
+      background: white;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      padding: 15px;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    @media (max-width: 600px) {
+      .filters {
+        flex-direction: column;
+      }
+      .logout-btn {
+        float: none;
+        width: 100%;
+        margin-top: 15px;
+      }
+    }
+    #maintenanceBtn:hover {
+  box-shadow: 0 0 12px 3px rgba(216, 69, 69, 0.8);
+  animation: pulse 1.2s infinite;
+}
+  @keyframes pulse {
+    0%, 100% {
+      filter: brightness(1);
+    }
+    50% {
+      filter: brightness(1.3);
+    }
+  }
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(216, 69, 69, 0.8);
+  }
+  70% {
+    box-shadow: 0 0 15px 10px rgba(216, 69, 69, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(216, 69, 69, 0);
+  }
+}
+
+  </style>
+</head>
+<div id="user-profile" style="position: fixed; top: 10px; left: 10px; cursor: pointer; display: flex; align-items: center; gap: 10px; z-index: 1000;">
+  <img id="profile-img" src="https://i.imgur.com/6VBx3io.gif" alt="Avatar" style="width: 50px; height: 50px; border-radius: 50%; animation: pulse 2s infinite;">
+  <span id="user-name" style="color: #333; font-weight: bold; font-size: 1.2em;"></span>
+</div>
+
+<style>
+  @keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.7; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  
+  .button-column {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.button-column button {
+  background: #0033a0;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: box-shadow 0.3s ease;
+}
+
+#btn404 {
+  background: #444;
+}
+
+#maintenanceBtn {
+  background: #d84545;
+}
+
+#logoutBtn {
+  background: #d80027;
+}
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+  animation: fadeInUp 1s ease-out;
+}
+
+.social-icons img {
+  animation: pulseGlow 2s infinite;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  cursor: pointer;
+}
+
+.social-icons img:hover {
+  transform: scale(1.3);
+  filter: brightness(1.5) drop-shadow(0 0 6px var(--accent-color, #0052cc));
+}
+
+/* Apparition douce */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Effet pulsation lumineuse */
+@keyframes pulseGlow {
+  0%, 100% {
+    filter: brightness(1) drop-shadow(0 0 2px var(--accent-color, #0052cc));
+  }
+  50% {
+    filter: brightness(1.3) drop-shadow(0 0 8px var(--accent-color, #0052cc));
+  }
+}
+
+</style>
+
+<body>
+  <header>
+    Dashboard Admin - Paris City Life RP
+   <div class="button-column">
+  <button id="btn404" title="Activer page 404">Activer 404</button>
+  <button id="maintenanceBtn" title="Activer page maintenance">Maintenance</button>
+  <button id="logoutBtn">Déconnexion</button>
+  <!-- Exemple à insérer dans dashboardAdmin.html -->
+<button onclick="window.location.href='historiqueAdmin.html'">Voir historique Donateurs</button>
+
+</div>
+
+  </header>
+  <main>
+    <section class="filters" aria-label="Filtres des dons">
+      <input type="text" id="filterUser" placeholder="Filtrer par Adminr (Discord ID ou nom)" />
+      <input type="date" id="filterDate" />
+      <input type="number" id="filterMinAmount" placeholder="Montant min (€)" min="0" />
+      <input type="number" id="filterMaxAmount" placeholder="Montant max (€)" min="0" />
+      <button id="clearFiltersBtn">Réinitialiser filtres</button>
+    </section>
+
+    <section>
+      <h2>Liste des dons</h2>
+      <table aria-label="Liste des dons" id="donationsTable">
+        <thead>
+          <tr>
+            <th>ID Don</th>
+            <th>Adminr</th>
+            <th>Email</th>
+            <th>Date</th>
+            <th>Montant (€)</th>
+            <th>Statut</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Données dynamiques -->
+        </tbody>
+      </table>
+    </section>
+
+    <section class="charts-container">
+      <div class="chart-box">
+        <h3>Dons par semaine</h3>
+        <canvas id="weeklyChart" aria-label="Graphique des dons par semaine" role="img"></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>Dons par mois</h3>
+        <canvas id="monthlyChart" aria-label="Graphique des dons par mois" role="img"></canvas>
+      </div>
+      <div class="social-icons">
+  <a href="https://discord.gg/tonserveur" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/2111/2111370.png" width="30">
+  </a>
+  <a href="https://tiktok.com/@tonserveur" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" width="30">
+  </a>
+  <a href="https://instagram.com/tonserveur" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png" width="30">
+  </a>
+</div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Vérification connexion admin
+    if (!localStorage.getItem('adminConnected')) {
+      alert("Vous devez être connecté en admin pour accéder à cette page.");
+      window.location.href = "connexionAdmin.html";
+    }
+const logoutBtn = document.getElementById('logoutBtn');
+logoutBtn.addEventListener('click', () => {
+  localStorage.removeItem('adminConnected');
+  localStorage.removeItem('adminEmail');
+  localStorage.removeItem('adminRole');
+  window.location.href = "index.html";  // Redirection vers page d'accueil
+});
+logoutBtn.addEventListener('click', () => {
+  if(confirm("Voulez-vous vraiment vous déconnecter ?")) {
+    localStorage.removeItem('adminConnected');
+    localStorage.removeItem('adminEmail');
+    localStorage.removeItem('adminRole');
+    window.location.href = "index.html";
+  }
+});
+
+    // Exemple de données dons (à remplacer par fetch JSON ou API)
+    const donations = [
+      { id: "D001", user: "JeanDupont#1234", email: "jean@example.com", date: "2025-06-30", amount: 50, status: "Validé" },
+      { id: "D002", user: "MarieL#4321", email: "marie@example.com", date: "2025-07-02", amount: 20, status: "Validé" },
+      { id: "D003", user: "AlexT#1111", email: "alex@example.com", date: "2025-07-03", amount: 100, status: "Bloqué" },
+      { id: "D004", user: "JeanDupont#1234", email: "jean@example.com", date: "2025-07-04", amount: 75, status: "Validé" },
+      { id: "D005", user: "PaulR#2222", email: "paul@example.com", date: "2025-07-05", amount: 150, status: "Remboursé" },
+      // etc...
+    ];
+
+    const tableBody = document.querySelector('#donationsTable tbody');
+    const filterUser = document.getElementById('filterUser');
+    const filterDate = document.getElementById('filterDate');
+    const filterMinAmount = document.getElementById('filterMinAmount');
+    const filterMaxAmount = document.getElementById('filterMaxAmount');
+    const clearFiltersBtn = document.getElementById('clearFiltersBtn');
+
+    function renderTable(data) {
+      tableBody.innerHTML = "";
+      if(data.length === 0) {
+        tableBody.innerHTML = "<tr><td colspan='7' style='text-align:center;'>Aucun don trouvé</td></tr>";
+        return;
+      }
+      data.forEach(don => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${don.id}</td>
+          <td>${don.user}</td>
+          <td>${don.email}</td>
+          <td>${don.date}</td>
+          <td>${don.amount.toFixed(2)}</td>
+          <td>${don.status}</td>
+          <td>
+            <button class="action-btn" onclick="signalDon('${don.id}')">Signaler</button>
+            <button class="action-btn" onclick="blockDon('${don.id}')">Bloquer</button>
+            <button class="action-btn" onclick="refundDon('${don.id}')">Rembourser</button>
+          </td>
+        `;
+        tableBody.appendChild(tr);
+      });
+    }
+
+    // Filtres
+    function filterDonations() {
+      let filtered = donations;
+
+      const userVal = filterUser.value.trim().toLowerCase();
+      const dateVal = filterDate.value;
+      const minAmount = parseFloat(filterMinAmount.value);
+      const maxAmount = parseFloat(filterMaxAmount.value);
+
+      if (userVal) {
+        filtered = filtered.filter(d =>
+          d.user.toLowerCase().includes(userVal) ||
+          d.email.toLowerCase().includes(userVal)
+        );
+      }
+
+      if (dateVal) {
+        filtered = filtered.filter(d => d.date === dateVal);
+      }
+
+      if (!isNaN(minAmount)) {
+        filtered = filtered.filter(d => d.amount >= minAmount);
+      }
+
+      if (!isNaN(maxAmount)) {
+        filtered = filtered.filter(d => d.amount <= maxAmount);
+      }
+
+      renderTable(filtered);
+      updateCharts(filtered);
+    }
+
+    filterUser.addEventListener('input', filterDonations);
+    filterDate.addEventListener('change', filterDonations);
+    filterMinAmount.addEventListener('input', filterDonations);
+    filterMaxAmount.addEventListener('input', filterDonations);
+    clearFiltersBtn.addEventListener('click', () => {
+      filterUser.value = "";
+      filterDate.value = "";
+      filterMinAmount.value = "";
+      filterMaxAmount.value = "";
+      filterDonations();
+    });
+
+    // Actions sur dons (simulation)
+    function signalDon(id) {
+      alert("Signalement du don " + id + " envoyé aux modérateurs.");
+      // Ajouter logique réelle ici
+    }
+    function blockDon(id) {
+      alert("Le don " + id + " a été bloqué.");
+      // Ajouter logique réelle ici
+    }
+    function refundDon(id) {
+      alert("Le don " + id + " a été remboursé.");
+      // Ajouter logique réelle ici
+    }
+    window.signalDon = signalDon;
+    window.blockDon = blockDon;
+    window.refundDon = refundDon;
+
+    // Graphiques Chart.js
+    const ctxWeekly = document.getElementById('weeklyChart').getContext('2d');
+    const ctxMonthly = document.getElementById('monthlyChart').getContext('2d');
+
+    let weeklyChart, monthlyChart;
+
+    function updateCharts(data) {
+      // Préparer données par semaine
+      // Ici on fait simple: on calcule la semaine ISO avec une fonction simple
+
+      function getWeekNumber(d) {
+        d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+        const dayNum = d.getUTCDay() || 7;
+        d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+        const yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+        const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1)/7);
+        return weekNo;
+      }
+
+      // Regrouper par semaine (année+semaine)
+      const weeklySums = {};
+      data.forEach(don => {
+        const dt = new Date(don.date);
+        const key = dt.getFullYear() + "-S" + getWeekNumber(dt);
+        weeklySums[key] = (weeklySums[key] || 0) + don.amount;
+      });
+
+      // Ordonner par clé (année/semaine)
+      const weeklyLabels = Object.keys(weeklySums).sort();
+      const weeklyData = weeklyLabels.map(k => weeklySums[k]);
+
+      // Par mois
+      const monthlySums = {};
+      data.forEach(don => {
+        const dt = new Date(don.date);
+        const key = dt.getFullYear() + "-" + (dt.getMonth()+1).toString().padStart(2,"0");
+        monthlySums[key] = (monthlySums[key] || 0) + don.amount;
+      });
+
+      const monthlyLabels = Object.keys(monthlySums).sort();
+      const monthlyData = monthlyLabels.map(k => monthlySums[k]);
+
+      // Mise à jour Chart.js
+
+      if (weeklyChart) {
+        weeklyChart.data.labels = weeklyLabels;
+        weeklyChart.data.datasets[0].data = weeklyData;
+        weeklyChart.update();
+      } else {
+        weeklyChart = new Chart(ctxWeekly, {
+          type: 'bar',
+          data: {
+            labels: weeklyLabels,
+            datasets: [{
+              label: 'Montant des dons (€)',
+              data: weeklyData,
+              backgroundColor: 'rgba(0, 51, 160, 0.7)'
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: { beginAtZero: true }
+            }
+          }
+        });
+      }
+
+      if (monthlyChart) {
+        monthlyChart.data.labels = monthlyLabels;
+        monthlyChart.data.datasets[0].data = monthlyData;
+        monthlyChart.update();
+      } else {
+        monthlyChart = new Chart(ctxMonthly, {
+          type: 'line',
+          data: {
+            labels: monthlyLabels,
+            datasets: [{
+              label: 'Montant des dons (€)',
+              data: monthlyData,
+              fill: true,
+              borderColor: 'rgba(216, 0, 39, 0.8)',
+              backgroundColor: 'rgba(216, 0, 39, 0.3)'
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: { beginAtZero: true }
+            }
+          }
+        });
+      }
+    }
+
+    // Initial render
+    renderTable(donations);
+    updateCharts(donations);
+
+const maintenanceBtn = document.getElementById('maintenanceBtn');
+
+// Fonction pour mettre à jour le texte du bouton selon le statut
+function updateMaintenanceBtnText() {
+  const isMaintenance = localStorage.getItem('maintenanceActive') === 'true';
+  maintenanceBtn.textContent = isMaintenance ? "Désactiver Maintenance" : "Activer Maintenance";
+  maintenanceBtn.style.backgroundColor = isMaintenance ? '#a00' : '#d84545';
+}
+
+// Au clic, bascule l’état maintenance
+maintenanceBtn.addEventListener('click', () => {
+  const isMaintenance = localStorage.getItem('maintenanceActive') === 'true';
+  if (isMaintenance) {
+    localStorage.setItem('maintenanceActive', 'false');
+    alert("Mode maintenance désactivé.");
+  } else {
+    localStorage.setItem('maintenanceActive', 'true');
+    alert("Mode maintenance activé.");
+  }
+  updateMaintenanceBtnText();
+});
+
+// Initialiser l’état du bouton au chargement
+updateMaintenanceBtnText();
+
+const btn404 = document.getElementById('btn404');
+
+// Fonction pour mettre à jour le texte et couleur du bouton 404
+function updateBtn404Text() {
+  const is404 = localStorage.getItem('page404Active') === 'true';
+  btn404.textContent = is404 ? "Désactiver 404" : "Activer 404";
+  btn404.style.backgroundColor = is404 ? '#a00' : '#444';
+  btn404.style.boxShadow = is404 ? '0 0 12px 3px rgba(160, 0, 0, 0.8)' : 'none';
+}
+
+// Gestion du clic sur le bouton 404
+btn404.addEventListener('click', () => {
+  const is404 = localStorage.getItem('page404Active') === 'true';
+  if (is404) {
+    localStorage.setItem('page404Active', 'false');
+    alert("Mode page 404 désactivé.");
+  } else {
+    localStorage.setItem('page404Active', 'true');
+    alert("Mode page 404 activé.");
+  }
+  updateBtn404Text();
+});
+
+// Initialisation à l'ouverture de la page
+updateBtn404Text();
+
+  </script>
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Exemple : récupérer l'Adminr depuis localStorage
+    const user = JSON.parse(localStorage.getItem("AdminrConnecte"));
+
+    if (user) {
+      const profileImage = document.getElementById("profileImage");
+      const profileName = document.getElementById("profileName");
+
+      // Image de profil selon le rôle
+      if (user.role === "admin") {
+        profileImage.src = "https://i.imgur.com/8Km9tLL.gif"; // Exemple image animée admin
+      } else if (user.role === "donateur") {
+        profileImage.src = "https://i.imgur.com/YO5pRGH.gif"; // Exemple image animée donateur
+      } else {
+        profileImage.src = "https://i.imgur.com/WCzJDW2.gif"; // Image par défaut
+      }
+
+      profileName.textContent = user.prenom || user.pseudo || "Adminr";
+
+      // Clique redirige vers le profil Adminr
+      document.getElementById("userProfile").addEventListener("click", () => {
+        window.location.href = "profilAdminr.html";
+      });
+    }
+  });
+    const userName = localStorage.getItem('userName') || 'Invité';
+
+  // Afficher le nom
+  document.getElementById('user-name').textContent = userName;
+
+  // Ajouter la redirection au clic
+  document.getElementById('user-profile').addEventListener('click', () => {
+    window.location.href = 'profilAdmin.html'; // Redirige vers la page profilAdmin.html
+  });
+</script>
+
+</body>
+</html>

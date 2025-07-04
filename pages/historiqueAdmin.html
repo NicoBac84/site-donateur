@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Historique Admin - Paris City Life RP</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #0033a0, #ffffff, #d80027);
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      color: #0033a0;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    }
+    h1, h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 2rem;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+    th {
+      background-color: #0033a0;
+      color: white;
+    }
+    .status-actif {
+      color: green;
+      font-weight: bold;
+    }
+    .status-supprime {
+      color: gray;
+      font-weight: bold;
+      text-decoration: line-through;
+    }
+    .status-banni {
+      color: red;
+      font-weight: bold;
+    }
+    button {
+      background-color: #0033a0;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      margin: 0 5px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #d80027;
+    }
+    #logContainer {
+      max-height: 200px;
+      overflow-y: auto;
+      background: #f9f9f9;
+      border: 1px solid #ccc;
+      padding: 10px;
+      font-family: monospace;
+      white-space: pre-wrap;
+      margin-top: 20px;
+      border-radius: 6px;
+    }
+        /* Social icons fixés */
+    .social-icons {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 20px;
+      z-index: 1000;
+    }
+    .social-icons img {
+      animation: pulseGlow 2s infinite;
+      transition: transform 0.3s ease, filter 0.3s ease;
+      cursor: pointer;
+      width: 30px;
+      height: 30px;
+    }
+    .social-icons img:hover {
+      transform: scale(1.3);
+      filter: brightness(1.5) drop-shadow(0 0 6px var(--accent-color));
+    }
+    @keyframes pulseGlow {
+      0%, 100% {
+        filter: brightness(1) drop-shadow(0 0 2px var(--accent-color));
+      }
+      50% {
+        filter: brightness(1.3) drop-shadow(0 0 8px var(--accent-color));
+      }
+    }
+    /* Apparition douce */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Effet pulsation lumineuse */
+@keyframes pulseGlow {
+  0%, 100% {
+    filter: brightness(1) drop-shadow(0 0 2px var(--accent-color, #0052cc));
+  }
+  50% {
+    filter: brightness(1.3) drop-shadow(0 0 8px var(--accent-color, #0052cc));
+  }
+}
+  </style>
+</head>
+<body>
+    <div class="social-icons">
+  <a href="https://discord.gg/tonserveur" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/2111/2111370.png" width="30">
+  </a>
+  <a href="https://tiktok.com/@tonserveur" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" width="30">
+  </a>
+  <a href="https://instagram.com/tonserveur" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png" width="30">
+  </a>
+</div>
+  <div class="container">
+    <h1>Administration des comptes Donateurs</h1>
+<!-- Ajoute ce bouton dans le <body> de historiqueAdmin.html, par exemple juste avant <h1> -->
+<button onclick="window.location.href='dashboardAdmin.html'">← Retour au Dashboard</button>
+<table></table>
+<table>
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>Nom complet</th>
+      <th>Status</th>
+      <th>Date création</th>
+      <th>Dernière connexion</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody id="donateursList">
+    <!-- Liste remplie par JS -->
+  </tbody>
+</table>
+
+<script>
+    
+  function loadDonateurs() {
+    const donateurs = JSON.parse(localStorage.getItem('donateurs') || '[]');
+    const tbody = document.getElementById('donateursList');
+    tbody.innerHTML = '';
+
+    if (donateurs.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6">Aucun donateur trouvé.</td></tr>';
+      return;
+    }
+
+    donateurs.forEach(d => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${d.email}</td>
+        <td>${d.firstName} ${d.lastName}</td>
+        <td class="${d.status}">${d.status.charAt(0).toUpperCase() + d.status.slice(1)}</td>
+        <td>${new Date(d.createdAt).toLocaleDateString()}</td>
+        <td>${d.lastLogin ? new Date(d.lastLogin).toLocaleString() : 'Jamais'}</td>
+        <td>
+          <button onclick="changerStatus('${d.email}', 'actif')">Actif</button>
+          <button onclick="changerStatus('${d.email}', 'supprime')">Supprimé</button>
+          <button onclick="changerStatus('${d.email}', 'banni')">Banni</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+    function renderLogs() {
+      if (logs.length === 0) {
+        logContainer.textContent = "Aucun journal d'activité.";
+      } else {
+        logContainer.textContent = logs.join('\n');
+      }
+    }
+
+  function changerStatus(email, nouveauStatus) {
+    let donateurs = JSON.parse(localStorage.getItem('donateurs') || '[]');
+    const index = donateurs.findIndex(d => d.email === email);
+    if (index !== -1) {
+      donateurs[index].status = nouveauStatus;
+      localStorage.setItem('donateurs', JSON.stringify(donateurs));
+      loadDonateurs();
+      alert(`Statut changé en "${nouveauStatus}" pour ${email}`);
+    }
+  }
+
+  loadDonateurs();
+</script>
+
+</body>
+</html>

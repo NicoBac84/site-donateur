@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>404 - Page non trouvée | Paris City Life RP</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@700&display=swap');
+
+  /* Fond animé dégradé */
+  body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(270deg, #0033a0, #d80027, #ffffff, #0033a0);
+    background-size: 800% 800%;
+    animation: gradientBG 15s ease infinite;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Roboto Mono', monospace;
+    color: #0033a0;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  @keyframes gradientBG {
+    0% {background-position:0% 50%;}
+    50% {background-position:100% 50%;}
+    100% {background-position:0% 50%;}
+  }
+
+  /* Glitch effect container */
+  .glitch {
+    position: relative;
+    font-size: 10rem;
+    font-weight: 700;
+    color: #d80027;
+    letter-spacing: 0.1em;
+    user-select: none;
+  }
+
+  /* Base text */
+  .glitch::before,
+  .glitch::after {
+    content: "404";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    opacity: 0.8;
+    clip: rect(0, 900px, 0, 0);
+  }
+
+  /* Rouge décalé */
+  .glitch::before {
+    left: 2px;
+    text-shadow: -2px 0 #d80027;
+    animation: glitchRed 2s infinite linear alternate-reverse;
+  }
+
+  /* Bleu décalé */
+  .glitch::after {
+    left: -2px;
+    text-shadow: -2px 0 #0033a0;
+    animation: glitchBlue 2s infinite linear alternate-reverse;
+  }
+
+  @keyframes glitchRed {
+    0% {
+      clip: rect(0, 900px, 0, 0);
+      transform: translate(0);
+    }
+    20% {
+      clip: rect(20px, 900px, 45px, 0);
+      transform: translate(-2px, -2px);
+    }
+    40% {
+      clip: rect(40px, 900px, 80px, 0);
+      transform: translate(2px, 2px);
+    }
+    60% {
+      clip: rect(10px, 900px, 50px, 0);
+      transform: translate(-2px, 0);
+    }
+    80% {
+      clip: rect(30px, 900px, 70px, 0);
+      transform: translate(2px, -2px);
+    }
+    100% {
+      clip: rect(0, 900px, 0, 0);
+      transform: translate(0);
+    }
+  }
+
+  @keyframes glitchBlue {
+    0% {
+      clip: rect(0, 900px, 0, 0);
+      transform: translate(0);
+    }
+    20% {
+      clip: rect(85px, 900px, 120px, 0);
+      transform: translate(2px, 2px);
+    }
+    40% {
+      clip: rect(40px, 900px, 80px, 0);
+      transform: translate(-2px, -2px);
+    }
+    60% {
+      clip: rect(10px, 900px, 50px, 0);
+      transform: translate(2px, 0);
+    }
+    80% {
+      clip: rect(30px, 900px, 70px, 0);
+      transform: translate(-2px, 2px);
+    }
+    100% {
+      clip: rect(0, 900px, 0, 0);
+      transform: translate(0);
+    }
+  }
+
+  h2 {
+    margin: 0.5rem 0 0;
+    font-weight: 700;
+    font-size: 2.5rem;
+    color: #0033a0;
+    text-shadow: 1px 1px 2px #fff;
+  }
+
+  p {
+    margin: 1rem auto 2rem;
+    max-width: 420px;
+    font-size: 1.2rem;
+    color: #222;
+    text-shadow: 1px 1px 2px #eee;
+  }
+
+  a.button {
+    display: inline-block;
+    background: #0033a0;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.2rem;
+    padding: 14px 40px;
+    border-radius: 40px;
+    text-decoration: none;
+    box-shadow: 0 0 20px #0033a0;
+    user-select: none;
+    animation: pulseBtn 3s infinite ease-in-out;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  a.button:hover {
+    background: #d80027;
+    box-shadow: 0 0 30px #d80027;
+  }
+
+  @keyframes pulseBtn {
+    0%, 100% {
+      box-shadow: 0 0 20px #0033a0;
+    }
+    50% {
+      box-shadow: 0 0 40px #0050d4;
+    }
+  }
+
+  footer {
+    position: fixed;
+    bottom: 8px;
+    font-size: 0.85rem;
+    color: #0033a0cc;
+    font-weight: 500;
+    user-select: none;
+  }
+
+  /* Mascotte animée */
+  .mascotte-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 120px;
+    height: 120px;
+    animation: bounce 3s ease-in-out infinite;
+    cursor: default;
+  }
+
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-15px);
+    }
+  }
+
+  /* Mascotte SVG styles */
+  svg.mascotte {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Optional: add blinking eyes */
+  .eye {
+    animation: blink 5s infinite;
+    transform-origin: center center;
+  }
+
+  @keyframes blink {
+    0%, 20%, 40%, 60%, 80%, 100% {
+      transform: scaleY(1);
+    }
+    10%, 30%, 50%, 70%, 90% {
+      transform: scaleY(0.1);
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="glitch" aria-label="Erreur 404">404</div>
+  <h2>Oups ! Page non trouvée</h2>
+  <p>La page que vous cherchez n'existe pas ou a été déplacée.</p>
+   <div style="margin-top: 10px;">
+      <a href="https://discord.gg/tonserveur" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111370.png" width="40"></a>
+      <a href="https://tiktok.com/@tonserveur" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" width="40"></a>
+      <a href="https://instagram.com/tonserveur" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png" width="40"></a>
+    </div>
+    <p></p>
+  <a href="index.html" class="button" aria-label="Retour à la page d'accueil">Retour à l'accueil</a>
+  <footer>Paris City Life RP &copy; 2025</footer>
+
+  <div class="mascotte-container" role="img" aria-label="Mascotte Paris City Life RP">
+    <svg class="mascotte" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" >
+      <!-- Corps -->
+      <circle cx="32" cy="32" r="30" fill="#0033a0" />
+      <!-- Visage blanc -->
+      <circle cx="32" cy="32" r="22" fill="#ffffff" />
+      <!-- Yeux -->
+      <ellipse class="eye" cx="22" cy="30" rx="4" ry="6" fill="#0033a0" />
+      <ellipse class="eye" cx="42" cy="30" rx="4" ry="6" fill="#0033a0" />
+      <!-- Pupilles -->
+      <circle cx="22" cy="30" r="2" fill="#d80027" />
+      <circle cx="42" cy="30" r="2" fill="#d80027" />
+      <!-- Bouche simple -->
+      <path d="M20 42 Q32 52 44 42" stroke="#d80027" stroke-width="3" fill="none" stroke-linecap="round" />
+      <!-- Casquette bleu -->
+      <path d="M12 15 Q32 5 52 15 L52 25 Q32 15 12 25 Z" fill="#0033a0" />
+      <!-- Casquette bande blanche -->
+      <rect x="18" y="17" width="28" height="5" fill="#ffffff" />
+      <!-- Casquette bande rouge -->
+      <rect x="18" y="22" width="28" height="3" fill="#d80027" />
+    </svg>
+  </div>
+</body>
+</html>
