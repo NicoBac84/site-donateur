@@ -1,0 +1,183 @@
+@ -0,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Paris City Life RP - Accueil</title>
+
+<style>
+  /* Couleurs bleu, blanc, rouge */
+  :root {
+    --bleu: #0033a0;
+    --blanc: #ffffff;
+    --rouge: #d80027;
+  }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, var(--bleu), var(--blanc), var(--rouge));
+    color: var(--blanc);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  h1 {
+    font-size: 3rem;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    animation: glow 3s ease-in-out infinite alternate;
+  }
+
+  /* Logo animé SVG */
+  #logo {
+    width: 150px;
+    height: 150px;
+    margin-bottom: 20px;
+    animation: rotateLogo 10s linear infinite;
+  }
+
+  /* Boutons */
+  .btn {
+    display: inline-block;
+    padding: 14px 28px;
+    margin: 10px 15px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--blanc);
+    background-color: var(--rouge);
+    border: 2px solid var(--blanc);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    text-decoration: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  }
+  .btn:hover {
+    background-color: var(--blanc);
+    color: var(--rouge);
+    border-color: var(--rouge);
+  }
+
+  /* Messages dynamiques */
+  #dynamicMessage {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 20px 0 40px 0;
+    height: 40px;
+    color: var(--blanc);
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+  }
+
+  /* Animations */
+  @keyframes glow {
+    from {
+      text-shadow: 0 0 10px var(--blanc);
+    }
+    to {
+      text-shadow: 0 0 30px var(--rouge);
+    }
+  }
+
+  @keyframes rotateLogo {
+    from { transform: rotate(0deg);}
+    to { transform: rotate(360deg);}
+  }
+
+  /* Responsive */
+  @media(max-width: 600px) {
+    h1 {
+      font-size: 2rem;
+    }
+    .btn {
+      font-size: 1rem;
+      padding: 10px 20px;
+    }
+    #logo {
+      width: 100px;
+      height: 100px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <!-- Logo SVG simple animée en rotation -->
+  <svg id="logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="50" r="48" stroke="#d80027" stroke-width="4" />
+    <path d="M25 50 L50 75 L75 50 L50 25 Z" fill="#0033a0" />
+    <circle cx="50" cy="50" r="12" fill="#ffffff" />
+  </svg>
+
+  <h1>Paris City Life RP</h1>
+</header>
+
+<div id="dynamicMessage"></div>
+
+<nav>
+
+  <a href="pages/connexion.html" class="btn" title="Espace Donateur">Espace Donateur</a>
+  <a href="pages/connexionAdmin.html" class="btn" title="Espace Admin">Espace Admin</a>
+</nav>
+   <div style="margin-top: 20px;">
+      <a href="https://discord.gg/tonserveur" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111370.png" width="30"></a>
+      <a href="https://tiktok.com/@tonserveur" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" width="30"></a>
+      <a href="https://instagram.com/tonserveur" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png" width="30"></a>
+    </div>
+    </div>
+  <section class="animations">
+      <marquee behavior="scroll" direction="left">💙🤍❤️ Merci à tous nos donateurs pour leur soutien ! ❤️🤍💙</marquee>
+
+<footer style="margin-top: 80px; font-size: 0.9rem; color: var(--bleu); opacity: 0.8; text-align:center; max-width: 320px;">
+            <p>© 2025 Paris City Life RP – Tous droits réservés | Contact : staff@pariscitylife.rp</p>
+  <p><a href="#" style="color: var(--blanc); text-decoration: underline;">Politique de confidentialité & RGPD</a></p>
+</footer>
+
+<script>
+  // Messages dynamiques en boucle (typewriter style simplifié)
+const messages = [
+    "Bienvenue sur Paris City Life RP !",
+    "Participez et soutenez le serveur via les dons.",
+    "Découvrez votre espace personnalisé.",
+    "Suivez la politique de Dondation & respectez la confidentialité RGPD/Lois & respectez du reglement du Serveur.",
+    "Rejoignez notre communauté Discord dès maintenant !",
+    "Gestion et suivi complet des DÉCLARATION DE CONFIRMATION & CONSENTEMENT Dons"
+];
+
+
+  const dynamicMessageEl = document.getElementById('dynamicMessage');
+  let index = 0;
+
+  function showMessage() {
+    let message = messages[index];
+    dynamicMessageEl.textContent = "";
+    let i = 0;
+    function typeWriter() {
+      if (i < message.length) {
+        dynamicMessageEl.textContent += message.charAt(i);
+        i++;
+        setTimeout(typeWriter, 60);
+      } else {
+        setTimeout(() => {
+          index = (index + 1) % messages.length;
+          showMessage();
+        }, 2500);
+      }
+    }
+    typeWriter();
+  }
+
+  showMessage();
+  
+</script>
+
+</body>
+</html>
