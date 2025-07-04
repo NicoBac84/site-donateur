@@ -1,0 +1,14 @@
+{
+  "users": [
+    {
+      "id": "user001",
+      "prenom": "Jean",
+      "nom": "Dupont",
+      "email": "jean.dupont@example.com",
+      "role": "donateur",
+      "statut": "actif",
+      "dateCreation": "2025-07-04T09:00:00Z",
+      "derniereConnexion": "2025-07-04T14:00:00Z"
+    }
+  ]
+}
